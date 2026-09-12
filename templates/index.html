@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hassan Carpool - Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1565c0, #42a5f5);
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header p {
+            font-size: 13px;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #1565c0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Main */
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: #1565c0;
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: #777;
+        }
+
+        /* Statistics */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .stat-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card h3 {
+            color: #1565c0;
+            font-size: 28px;
+        }
+
+        .stat-card p {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* Menu */
+        .section-title {
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.14);
+        }
+
+        .menu-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .menu-card h3 {
+            color: #1565c0;
+            margin-bottom: 7px;
+        }
+
+        .menu-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Recent rides */
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* Mobile */
+        @media (max-width: 800px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .menu {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .logout-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px 8px;
+            }
+
+            .stat-icon {
+                font-size: 28px;
+            }
+
+            .stat-card h3 {
+                font-size: 23px;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+    <div>
+        <h1>🚗 Hassan Carpool</h1>
+        <p>Smart & Easy Carpool Management</p>
+    </div>
+
+    <a href="{{ url_for('logout') }}" class="logout-btn">
+        Logout
+    </a>
+
+</header>
+
+
+<!-- MAIN CONTENT -->
+<main class="container">
+
+    <!-- WELCOME -->
+    <section class="welcome">
+
+        <h2>
+            Welcome{% if username %}, {{ username }}{% endif %}! 👋
+        </h2>
+
+        <p>
+            Manage your carpool activities from one place.
+        </p>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">🚗</div>
+
+            <h3>{{ total_cars|default(0) }}</h3>
+
+            <p>Total Cars</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">👥</div>
+
+            <h3>{{ total_users|default(0) }}</h3>
+
+            <p>Users</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">🛣️</div>
+
+            <h3>{{ total_rides|default(0) }}</h3>
+
+            <p>Total Rides</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">📅</div>
+
+            <h3>{{ upcoming_rides|default(0) }}</h3>
+
+            <p>Upcoming Rides</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAIN MENU -->
+    <h2 class="section-title">
+        Carpool Management
+    </h2>
+
+
+    <section class="menu">
+
+        <!-- Drivers -->
+        <a href="{{ url_for('drivers') }}" class="menu-card">
+
+            <div class="menu-icon">👨‍✈️</div>
+
+            <h3>Drivers</h3>
+
+            <p>
+                Add and manage carpool drivers.
+            </p>
+
+        </a>
+
+
+        <!-- Cars -->
+        <a href="{{ url_for('cars') }}" class="menu-card">
+
+            <div class="menu-icon">🚘</div>
+
+            <h3>Cars</h3>
+
+            <p>
+                Manage vehicles and available seats.
+            </p>
+
+        </a>
+
+
+        <!-- Passengers -->
+        <a href="{{ url_for('passengers') }}" class="menu-card">
+
+            <div class="menu-icon">🧑‍🤝‍🧑</div>
+
+            <h3>Passengers</h3>
+
+            <p>
+                Manage passengers and carpool members.
+            </p>
+
+        </a>
+
+
+        <!-- Rides -->
+        <a href="{{ url_for('rides') }}" class="menu-card">
+
+            <div class="menu-icon">🛣️</div>
+
+            <h3>Rides</h3>
+
+            <p>
+                Create and manage daily rides.
+            </p>
+
+        </a>
+
+
+        <!-- Calendar -->
+        <a href="{{ url_for('calendar') }}" class="menu-card">
+
+            <div class="menu-icon">📅</div>
+
+            <h3>Calendar</h3>
+
+            <p>
+                View and manage carpool schedules.
+            </p>
+
+        </a>
+
+
+        <!-- Bookings -->
+        <a href="{{ url_for('bookings') }}" class="menu-card">
+
+            <div class="menu-icon">🎫</div>
+
+            <h3>Bookings</h3>
+
+            <p>
+                View passenger bookings and ride availability.
+            </p>
+
+        </a>
+
+    </section>
+
+
+    <!-- RECENT RIDES -->
+    <section class="card">
+
+        <h2>🛣️ Recent Rides</h2>
+
+        {% if rides %}
+
+            {% for ride in rides %}
+
+                <div style="
+                    padding:15px;
+                    border-bottom:1px solid #eee;
+                ">
+
+                    <strong>
+                        {{ ride.route }}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        {{ ride.date }}
+                    </small>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                <div style="font-size:40px;">
+                    🚗
+                </div>
+
+                <p>
+                    No rides available yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+
+    © 2026 Hassan Carpool |
+    Smart Carpool Management System
+
+</footer>
+
+</body>
+</html>
